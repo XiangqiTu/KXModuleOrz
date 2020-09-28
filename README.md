@@ -1,5 +1,8 @@
 # KXModuleOrz
-
+[![CI Status](https://img.shields.io/travis/XiangqiTu/KXModuleOrz.svg?style=flat)](https://travis-ci.org/XiangqiTu/KXModuleOrz)
+[![Version](https://img.shields.io/cocoapods/v/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
+[![License](https://img.shields.io/cocoapods/l/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
+[![Platform](https://img.shields.io/cocoapods/p/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
 ## 概述
 KXModuleOrz 是组件化架构设计的管理统称。orz 代表为组件`module`提供服务的意思
 
