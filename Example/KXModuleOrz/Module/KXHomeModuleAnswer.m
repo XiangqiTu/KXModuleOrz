@@ -7,8 +7,8 @@
 //
 
 #import "KXHomeModuleAnswer.h"
+
 #import <KXModuleOrz/KXModuleOrz.h>
-//#import <KXModuleQuestionRepo/Demo_Module_Question.h>
 #import "Demo_Module_Question.h"
 
 @interface KXHomeModuleAnswer () <KXModuleProtocol, DemoHomeQuestion>
@@ -25,7 +25,7 @@ KXModuleOrz_Auto_Regist()
 
 - (void)moduleCatchEvent:(KXModuleEvent)event {
     switch (event) {
-        case KXModuleEventSetup:
+        case KXModuleEventSetup: {
             //1.Regist QA Service
             [[KXModuleOrz shareInstance] orz_registAnswer:[self class] forQuestion:@protocol(DemoHomeQuestion)];
             
@@ -35,6 +35,7 @@ KXModuleOrz_Auto_Regist()
             //3.Unregist QA Service (特殊场景下，可能不希望有模块回答Question)
 //            [[KXModuleOrz shareInstance] orz_unregistAnswer:[self class]];
             break;
+        }
             
         default:
             break;

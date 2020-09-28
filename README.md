@@ -3,6 +3,153 @@
 [![Version](https://img.shields.io/cocoapods/v/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
 [![License](https://img.shields.io/cocoapods/l/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
 [![Platform](https://img.shields.io/cocoapods/p/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
+
+## Demo
+#### Module生命周期及事件
+* 注册业务Module
+	* 实现`KXModuleProtocol`
+	* `KXModuleOrz_Auto_Regist()` **@required**  触发自动注册机制
+	* `modulePriority ` **@optional**，缺省值为`KXModulePriorityLow`
+	* `- (void)moduleCatchEvent:(KXModuleEvent)event` **@optional**, 接收处理 `KXModuleEvent` 事件
+
+```
+#import <KXModuleOrz/KXModuleOrz.h>
+
+//This value may be changed for future
+static NSInteger const __varModulePriority = KXModulePriorityLow;
+
+//This value may be changed for future
+static NSInteger const __varModulePriority = KXModulePriorityLow;
+
+@interface KXHomeModule () <KXModuleProtocol>
+
+@end
+
+@implementation KXHomeModule
+
+KXModuleOrz_Auto_Regist()
+
++ (KXModulePriority)modulePriority {
+    return __varModulePriority;
+}
+
+- (void)moduleCatchEvent:(KXModuleEvent)event {
+    switch (event) {
+        case KXModuleEventSetup:
+            NSLog(@"HomeModule Setup");
+            break;
+        case KXModuleEventMainViewDidLoad: {
+            NSLog(@"HomeModule Load Subviews");
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+@end
+
+```
+
+* `orz_triggerEvent` 在合适的时期触发 `KXModuleEvent` 事件, 注册过的`Module`会响应 `- (void)moduleCatchEvent:(KXModuleEvent)event` 事件
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [[KXModuleOrz shareInstance] orz_triggerEvent:KXModuleEventSetup];
+    return YES;
+}
+```
+
+* `KXModuleEvent`事件响应失效, `Module`注册表中删除 `moduleClass`
+
+```
+[[KXModuleOrz shareInstance] orz_enableModuleActive:NO module:moduleClass];
+
+```
+
+#### QA系统
+**Module生命周期及事件** 的基础上，新建`AnswerClass`
+
+* 注册Answer
+	* 实现 `KXModuleProtocol`, `DemoHomeQuestion``("Demo_Module_Question.h")`
+	* `KXModuleEventSetup` 事件中，注册 `Answer` 到QA系统中
+	* 后续`KXModuleEvent`事件拒绝响应
+
+```
+#import <KXModuleOrz/KXModuleOrz.h>
+#import "Demo_Module_Question.h"
+
+@interface KXHomeModuleAnswer () <KXModuleProtocol, DemoHomeQuestion>
+
+@end
+
+@implementation KXHomeModuleAnswer
+
+KXModuleOrz_Auto_Regist()
+
++ (KXModulePriority)modulePriority {
+    return KXModulePriorityLow;
+}
+
+- (void)moduleCatchEvent:(KXModuleEvent)event {
+    switch (event) {
+        case KXModuleEventSetup: {
+            //1.Regist QA Service
+            [[KXModuleOrz shareInstance] orz_registAnswer:[self class] forQuestion:@protocol(DemoHomeQuestion)];
+            
+            //2.UnActive Module Event （后续不希望answer module 有 event 活性）
+            [[KXModuleOrz shareInstance] orz_enableModuleActive:NO module:[self class]];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+@end
+```
+
+* 回答 `Module_Question` 中的问题 （标识 `__ORZ_ANSWER__`）
+
+```
+#pragma mark - Answer Questions
+
++ (UIViewController *)homeMainViewController __ORZ_ANSWER__
+{
+    return [UIViewController new];
+}
+
++ (void)presentHomeSubController __ORZ_ANSWER__
+{
+    
+}
+
++ (int)complexMethodWithSEL:(SEL)selector
+                     target:(id)target
+                      block:(dispatch_block_t)block
+                  struction:(MAMapPoint)mapPoint
+                     count:(NSInteger)count
+                      point:(CGPoint)point
+                      size:(CGSize)size
+                        rect:(CGRect)rect
+                     isBOOL:(BOOL)isBOOL __ORZ_ANSWER__
+{
+    NSLog(@"all kinds of parameters");
+    
+    return 200;
+}
+
+```
+
+* 取消注册 QA系统
+
+```
+[[KXModuleOrz shareInstance] orz_unregistAnswer:[self class]];
+
+```
+
 ## 概述
 KXModuleOrz 是组件化架构设计的管理统称。orz 代表为组件`module`提供服务的意思
 

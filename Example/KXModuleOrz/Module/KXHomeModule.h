@@ -6,8 +6,6 @@
 //  Copyright © 2020 XiangqiTu. All rights reserved.
 //
 
-#import <KXModuleOrz/KXModuleOrz.h>
-
-@interface KXHomeModule : NSObject <KXModuleProtocol>
+@interface KXHomeModule : NSObject 
 
 @end

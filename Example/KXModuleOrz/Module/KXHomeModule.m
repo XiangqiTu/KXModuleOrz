@@ -8,8 +8,14 @@
 
 #import "KXHomeModule.h"
 
+#import <KXModuleOrz/KXModuleOrz.h>
+
 //This value may be changed for future
 static NSInteger const __varModulePriority = KXModulePriorityLow;
+
+@interface KXHomeModule () <KXModuleProtocol>
+
+@end
 
 @implementation KXHomeModule
 
