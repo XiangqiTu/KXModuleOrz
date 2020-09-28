@@ -10,8 +10,8 @@ TODO: Add long description of the pod here.
 
   s.homepage         = 'https://github.com/XiangqiTu/KXModuleOrz'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'XiangqiTu' => '110293734@qq.com', 'XiangqiTu' => 'xiangqitu@gmail.com' }
-  s.source           = { :git => 'git@github.com:XiangqiTu/KXModuleOrz.git', :tag => s.version.to_s }
+  s.author           = { 'XiangqiTu' => '110293734@qq.com'}
+  s.source           = { :git => 'https://github.com/XiangqiTu/KXModuleOrz.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
