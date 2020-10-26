@@ -5,6 +5,8 @@
 [![Platform](https://img.shields.io/cocoapods/p/KXModuleOrz.svg?style=flat)](https://cocoapods.org/pods/KXModuleOrz)
 
 ## Demo11
+## Demo1122
+## Demo112233
 ## Demo
 #### Module生命周期及事件
 * 注册业务Module
